@@ -7,7 +7,8 @@ use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-
+use App\Models\Item;
+use App\Models\Bid;
 class User extends Authenticatable
 {
     /** @use HasFactory<UserFactory> */
@@ -47,4 +48,13 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+    public function items()
+        {
+            return $this->hasMany(Item::class);
+        }
+
+        public function bids()
+        {
+            return $this->hasMany(Bid::class);
+        }
 }

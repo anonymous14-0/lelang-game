@@ -2,6 +2,11 @@
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Penjual\ItemController;
+use App\Http\Controllers\Pembeli\BidController;
+use App\Http\Controllers\Pembeli\AuctionController as PembeliAuctionController;
+use App\Http\Controllers\Penjual\AuctionController as PenjualAuctionController;
 
 Route::view('/', 'welcome');
 
@@ -37,8 +42,14 @@ Route::middleware(['auth', 'role:admin'])
             '/admin/dashboard',
             'admin.dashboard'
         )->name('admin.dashboard');
+        Route::resource(
+            '/admin/categories',
+            CategoryController::class
+        )->names('admin.categories');
+
 
     });
+
 
 /*
 |--------------------------------------------------------------------------
@@ -54,6 +65,15 @@ Route::middleware(['auth', 'role:penjual'])
             'penjual.dashboard'
         )->name('penjual.dashboard');
 
+        Route::resource(
+            '/penjual/items',
+            ItemController::class
+        )->names('penjual.items');
+        Route::resource(
+            '/penjual/auctions',
+            PenjualAuctionController::class
+        )->names('penjual.auctions');
+        
     });
 
 /*
@@ -69,7 +89,18 @@ Route::middleware(['auth', 'role:pembeli'])
             '/pembeli/dashboard',
             'pembeli.dashboard'
         )->name('pembeli.dashboard');
-
+        Route::get(
+            '/pembeli/auctions',
+            [PembeliAuctionController::class, 'index']
+        )->name('pembeli.auctions.index');
+        Route::post(
+            '/auctions/{auction}/bid',
+            [BidController::class, 'store']
+        )->name('bids.store');
+        Route::get(
+            '/pembeli/auctions/{auction}',
+            [PembeliAuctionController::class, 'show']
+        )->name('pembeli.auctions.show');
     });
 
 require __DIR__.'/auth.php';
