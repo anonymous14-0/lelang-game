@@ -7,6 +7,10 @@ use App\Http\Controllers\Penjual\ItemController;
 use App\Http\Controllers\Pembeli\BidController;
 use App\Http\Controllers\Pembeli\AuctionController as PembeliAuctionController;
 use App\Http\Controllers\Penjual\AuctionController as PenjualAuctionController;
+use App\Http\Controllers\Pembeli\DashboardController;
+use App\Http\Controllers\Pembeli\TransactionController;
+use App\Http\Controllers\Admin\TransactionController as AdminTransactionController;
+use App\Http\Controllers\Penjual\TransactionController as PenjualTransactionController;
 
 Route::view('/', 'welcome');
 
@@ -46,8 +50,20 @@ Route::middleware(['auth', 'role:admin'])
             '/admin/categories',
             CategoryController::class
         )->names('admin.categories');
+        Route::get(
+            '/admin/transactions',
+            [AdminTransactionController::class, 'index']
+        )->name('admin.transactions.index');
 
+        Route::post(
+            '/admin/transactions/{transaction}/verify',
+            [AdminTransactionController::class, 'verify']
+        )->name('admin.transactions.verify');
 
+        Route::post(
+            '/admin/transactions/{transaction}/reject',
+            [AdminTransactionController::class, 'reject']
+        )->name('admin.transactions.reject');
     });
 
 
@@ -73,6 +89,15 @@ Route::middleware(['auth', 'role:penjual'])
             '/penjual/auctions',
             PenjualAuctionController::class
         )->names('penjual.auctions');
+        Route::get(
+            '/penjual/transactions',
+            [PenjualTransactionController::class, 'index']
+        )->name('penjual.transactions.index');
+
+        Route::post(
+            '/penjual/transactions/{transaction}/send-account',
+            [PenjualTransactionController::class, 'sendAccount']
+        )->name('penjual.transactions.send');
         
     });
 
@@ -85,9 +110,9 @@ Route::middleware(['auth', 'role:penjual'])
 Route::middleware(['auth', 'role:pembeli'])
     ->group(function () {
 
-        Route::view(
+        Route::get(
             '/pembeli/dashboard',
-            'pembeli.dashboard'
+            [DashboardController::class, 'index']
         )->name('pembeli.dashboard');
         Route::get(
             '/pembeli/auctions',
@@ -101,6 +126,24 @@ Route::middleware(['auth', 'role:pembeli'])
             '/pembeli/auctions/{auction}',
             [PembeliAuctionController::class, 'show']
         )->name('pembeli.auctions.show');
+        Route::get(
+            '/pembeli/transactions',
+            [TransactionController::class, 'index']
+        )->name('pembeli.transactions.index');
+
+        Route::post(
+            '/pembeli/transactions/{transaction}/upload-proof',
+            [TransactionController::class, 'uploadProof']
+        )->name('pembeli.transactions.upload');
+        Route::get(
+            '/pembeli/transactions/{transaction}',
+            [TransactionController::class, 'show']
+        )->name('pembeli.transactions.show');
+
+        Route::post(
+            '/pembeli/transactions/{transaction}/complete',
+            [TransactionController::class, 'complete']
+        )->name('pembeli.transactions.complete');
     });
 
 require __DIR__.'/auth.php';

@@ -14,14 +14,17 @@
 
             <div class="mb-4">
                 <label>Item</label>
-
                 <select
                     name="item_id"
-                    class="border rounded w-full p-2">
+                    class="border rounded w-full p-2 bg-white text-black">
 
                     @foreach($items as $item)
-                        <option value="{{ $item->id }}">
-                            {{ $item->title }}
+                        <option
+                            value="{{ $item->id }}"
+                            class="text-black bg-white">
+
+                            {{ $item->id }} - {{ $item->title }}
+
                         </option>
                     @endforeach
 

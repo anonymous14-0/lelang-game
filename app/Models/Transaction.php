@@ -13,6 +13,9 @@ class Transaction extends Model
         'status',
         'payment_proof',
         'admin_note',
+        'account_email',
+        'account_password',
+        'seller_note',
     ];
 
     public function auction()

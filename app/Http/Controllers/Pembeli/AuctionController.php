@@ -21,6 +21,11 @@ class AuctionController extends Controller
     }
     public function show(Auction $auction)
     {
+        $auction->load([
+            'item',
+            'bids.user'
+        ]);
+
         return view(
             'pembeli.auctions.show',
             compact('auction')

@@ -34,7 +34,9 @@ class AuctionController extends Controller
         $items = Item::where(
             'user_id',
             auth()->id()
-        )->doesntHave('auction')->get();
+        )
+        ->doesntHave('auction')
+        ->get();
 
         return view(
             'penjual.auctions.create',
