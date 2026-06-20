@@ -47,7 +47,16 @@ class ItemController extends Controller
             'category_id' => 'required',
             'description' => 'required',
             'starting_price' => 'required|numeric',
+            'image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
         ]);
+
+        $imagePath = null;
+
+        if ($request->hasFile('image')) {
+            $imagePath = $request
+                ->file('image')
+                ->store('items', 'public');
+        }
 
         Item::create([
             'user_id' => auth()->id(),
@@ -55,6 +64,7 @@ class ItemController extends Controller
             'title' => $request->title,
             'description' => $request->description,
             'starting_price' => $request->starting_price,
+            'image' => $imagePath,
             'status' => 'draft',
         ]);
 

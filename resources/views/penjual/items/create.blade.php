@@ -8,7 +8,8 @@
     <div class="p-6">
 
         <form action="{{ route('penjual.items.store') }}"
-              method="POST">
+                method="POST"
+                enctype="multipart/form-data">
 
             @csrf
 
@@ -54,6 +55,14 @@
                     name="starting_price"
                     class="border rounded w-full p-2"
                     required>
+            </div>
+            <div class="mb-4">
+                <label>Gambar Item</label>
+
+                <input
+                    type="file"
+                    name="image"
+                    class="border rounded w-full p-2">
             </div>
 
             <button

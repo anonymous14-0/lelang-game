@@ -11,6 +11,7 @@ use App\Http\Controllers\Pembeli\DashboardController;
 use App\Http\Controllers\Pembeli\TransactionController;
 use App\Http\Controllers\Admin\TransactionController as AdminTransactionController;
 use App\Http\Controllers\Penjual\TransactionController as PenjualTransactionController;
+use App\Http\Controllers\Penjual\DashboardController as PenjualDashboardController;
 
 Route::view('/', 'welcome');
 
@@ -76,9 +77,9 @@ Route::middleware(['auth', 'role:admin'])
 Route::middleware(['auth', 'role:penjual'])
     ->group(function () {
 
-        Route::view(
+        Route::get(
             '/penjual/dashboard',
-            'penjual.dashboard'
+            [PenjualDashboardController::class, 'index']
         )->name('penjual.dashboard');
 
         Route::resource(

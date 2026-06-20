@@ -1,6 +1,12 @@
 <x-app-layout>
 
     <div class="p-6">
+        @if($auction->item->image)
+            <img
+                src="{{ asset('storage/' . $auction->item->image) }}"
+                alt="{{ $auction->item->title }}"
+                class="w-64 h-64 object-cover rounded mb-4">
+        @endif
 
         <h1 class="text-2xl font-bold">
             {{ $auction->item->title }}

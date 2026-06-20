@@ -19,6 +19,7 @@
                     <table class="min-w-full">
                         <thead>
                             <tr>
+                                <th class="text-left p-2">Gambar</th>
                                 <th class="text-left p-2">Judul</th>
                                 <th class="text-left p-2">Kategori</th>
                                 <th class="text-left p-2">Harga Awal</th>
@@ -29,6 +30,16 @@
                         <tbody>
                             @forelse($items as $item)
                                 <tr>
+                                    <td class="p-2">
+                                        @if($item->image)
+                                            <img
+                                                src="{{ asset('storage/' . $item->image) }}"
+                                                alt="{{ $item->title }}"
+                                                class="w-20 h-20 object-cover rounded">
+                                        @else
+                                            Tidak ada gambar
+                                        @endif
+                                    </td>
                                     <td class="p-2">
                                         {{ $item->title }}
                                     </td>
@@ -47,7 +58,7 @@
                                 </tr>
                             @empty
                                 <tr>
-                                    <td colspan="4" class="p-2 text-center">
+                                    <td colspan="5" class="p-2 text-center">
                                         Belum ada item
                                     </td>
                                 </tr>
