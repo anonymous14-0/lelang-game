@@ -9,9 +9,6 @@ new #[Layout('layouts.guest')] class extends Component
 {
     public LoginForm $form;
 
-    /**
-     * Handle an incoming authentication request.
-     */
     public function login()
     {
         $this->validate();
@@ -32,50 +29,90 @@ new #[Layout('layouts.guest')] class extends Component
 
         return redirect('/pembeli/dashboard');
     }
-}; ?>
+};
 
-<div>
-    <!-- Session Status -->
-    <x-auth-session-status class="mb-4" :status="session('status')" />
+?>
 
-    <form wire:submit="login">
-        <!-- Email Address -->
-        <div>
-            <x-input-label for="email" :value="__('Email')" />
-            <x-text-input wire:model="form.email" id="email" class="block mt-1 w-full" type="email" name="email" required autofocus autocomplete="username" />
-            <x-input-error :messages="$errors->get('form.email')" class="mt-2" />
+<div class="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-900 via-blue-900 to-purple-900 px-4">
+
+    <div class="w-full max-w-md bg-white rounded-2xl shadow-2xl p-8">
+
+        {{-- Header --}}
+        <div class="text-center mb-8">
+            <h1 class="text-3xl font-bold text-purple-700">
+                🎮 GameBid
+            </h1>
+
+            <p class="text-gray-500 mt-2">
+                Login untuk mulai bidding item game favoritmu
+            </p>
         </div>
 
-        <!-- Password -->
-        <div class="mt-4">
-            <x-input-label for="password" :value="__('Password')" />
+        <form wire:submit="login">
 
-            <x-text-input wire:model="form.password" id="password" class="block mt-1 w-full"
-                            type="password"
-                            name="password"
-                            required autocomplete="current-password" />
+            {{-- Email --}}
+            <div class="mb-5">
+                <label class="block mb-2 text-gray-700 font-medium">
+                    Email
+                </label>
 
-            <x-input-error :messages="$errors->get('form.password')" class="mt-2" />
-        </div>
+                <input
+                    type="email"
+                    wire:model="form.email"
+                    class="w-full rounded-xl border border-gray-300 px-4 py-3 focus:ring-2 focus:ring-purple-500 focus:outline-none"
+                >
 
-        <!-- Remember Me -->
-        <div class="block mt-4">
-            <label for="remember" class="inline-flex items-center">
-                <input wire:model="form.remember" id="remember" type="checkbox" class="rounded dark:bg-gray-900 border-gray-300 dark:border-gray-700 text-indigo-600 shadow-sm focus:ring-indigo-500 dark:focus:ring-indigo-600 dark:focus:ring-offset-gray-800" name="remember">
-                <span class="ms-2 text-sm text-gray-600 dark:text-gray-400">{{ __('Remember me') }}</span>
-            </label>
-        </div>
+                @error('form.email')
+                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                @enderror
+            </div>
 
-        <div class="flex items-center justify-end mt-4">
-            @if (Route::has('password.request'))
-                <a class="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800" href="{{ route('password.request') }}" wire:navigate>
-                    {{ __('Forgot your password?') }}
+            {{-- Password --}}
+            <div class="mb-5">
+                <label class="block mb-2 text-gray-700 font-medium">
+                    Password
+                </label>
+
+                <input
+                    type="password"
+                    wire:model="form.password"
+                    class="w-full rounded-xl border border-gray-300 px-4 py-3 focus:ring-2 focus:ring-purple-500 focus:outline-none"
+                >
+
+                @error('form.password')
+                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                @enderror
+            </div>
+
+            {{-- Remember --}}
+            <div class="flex items-center mb-6">
+                <input
+                    type="checkbox"
+                    wire:model="form.remember"
+                    class="mr-2"
+                >
+                <span class="text-gray-600">
+                    Remember me
+                </span>
+            </div>
+
+            {{-- Button --}}
+            <button
+                type="submit"
+                class="w-full bg-purple-600 hover:bg-purple-700 text-white py-3 rounded-xl font-semibold transition"
+            >
+                LOGIN
+            </button>
+
+            {{-- Register --}}
+            <div class="text-center mt-6 text-gray-500">
+                Belum punya akun?
+                <a href="{{ route('register') }}"
+                   class="text-purple-600 font-semibold hover:underline">
+                    Register
                 </a>
-            @endif
+            </div>
 
-            <x-primary-button class="ms-3">
-                {{ __('Log in') }}
-            </x-primary-button>
-        </div>
-    </form>
+        </form>
+    </div>
 </div>
