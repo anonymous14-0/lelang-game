@@ -12,6 +12,7 @@ use App\Http\Controllers\Pembeli\TransactionController;
 use App\Http\Controllers\Admin\TransactionController as AdminTransactionController;
 use App\Http\Controllers\Penjual\TransactionController as PenjualTransactionController;
 use App\Http\Controllers\Penjual\DashboardController as PenjualDashboardController;
+use App\Http\Controllers\Admin\AdminDashboardController;
 
 Route::view('/', 'welcome');
 
@@ -43,9 +44,9 @@ Route::view('profile', 'profile')
 Route::middleware(['auth', 'role:admin'])
     ->group(function () {
 
-        Route::view(
+        Route::get(
             '/admin/dashboard',
-            'admin.dashboard'
+            [AdminDashboardController::class, 'index']
         )->name('admin.dashboard');
         Route::resource(
             '/admin/categories',

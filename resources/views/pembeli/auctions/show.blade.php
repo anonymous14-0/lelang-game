@@ -1,181 +1,137 @@
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    const countdownElement = document.getElementById("countdown");
+
+    const endTime = new Date(
+        "{{ \Carbon\Carbon::parse($auction->end_time)->toIso8601String() }}"
+    ).getTime();
+
+    const timer = setInterval(function () {
+
+        const now = new Date().getTime();
+        const distance = endTime - now;
+
+        if (distance <= 0) {
+            clearInterval(timer);
+            countdownElement.innerHTML = "LELANG BERAKHIR";
+            countdownElement.classList.remove("text-blue-400");
+            countdownElement.classList.add("text-red-500");
+            return;
+        }
+
+        const days = Math.floor(distance / (1000*60*60*24));
+        const hours = Math.floor((distance % (1000*60*60*24)) / (1000*60*60));
+        const minutes = Math.floor((distance % (1000*60*60)) / (1000*60));
+        const seconds = Math.floor((distance % (1000*60)) / 1000);
+
+        countdownElement.innerHTML =
+            `${days}h ${hours}j ${minutes}m ${seconds}d`;
+
+    }, 1000);
+});
+</script>
 <x-app-layout>
-
     <div class="p-6">
-        @if($auction->item->image)
-            <img
-                src="{{ asset('storage/' . $auction->item->image) }}"
-                alt="{{ $auction->item->title }}"
-                class="w-64 h-64 object-cover rounded mb-4">
-        @endif
 
-        <h1 class="text-2xl font-bold">
-            {{ $auction->item->title }}
-        </h1>
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
 
-        <p>
-            Harga Saat Ini:
-            Rp {{ number_format($auction->current_price, 0, ',', '.') }}
-        </p>
-
-        <p class="mt-2">
-            <strong>Berakhir dalam:</strong>
-            <span
-                id="countdown"
-                class="font-bold text-blue-600">
-            </span>
-        </p>
-
-        @if(session('success'))
-            <div class="bg-green-100 p-3 mb-3 rounded">
-                {{ session('success') }}
+            {{-- LEFT: IMAGE --}}
+            <div class="bg-slate-800 rounded-2xl p-4 shadow-lg">
+                @if($auction->item->image)
+                    <img
+                        src="{{ asset('storage/' . $auction->item->image) }}"
+                        alt="{{ $auction->item->title }}"
+                        class="w-full h-[450px] object-cover rounded-xl"
+                    >
+                @else
+                    <div class="w-full h-[450px] bg-gray-300 rounded-xl flex items-center justify-center">
+                        No Image
+                    </div>
+                @endif
             </div>
-        @endif
 
-        @if(session('error'))
-            <div class="bg-red-100 p-3 mb-3 rounded">
-                {{ session('error') }}
+            {{-- RIGHT: DETAIL --}}
+            <div class="bg-slate-800 rounded-2xl p-6 shadow-lg">
+
+                {{-- Title --}}
+                <h1 class="text-3xl font-bold text-white mb-4">
+                    {{ $auction->item->title }}
+                </h1>
+
+                {{-- Price --}}
+                <div class="mb-4">
+                    <p class="text-gray-400">Harga Saat Ini</p>
+                    <h2 class="text-4xl font-bold text-green-400">
+                        Rp {{ number_format($auction->current_price,0,',','.') }}
+                    </h2>
+                </div>
+
+                {{-- Countdown --}}
+                <div class="mb-6 bg-slate-700 rounded-xl p-4">
+                    <p class="text-gray-300 mb-2">Berakhir dalam</p>
+
+                    <p
+                        id="countdown"
+                        class="text-2xl font-bold text-blue-400"
+                    >
+                        Loading...
+                    </p>
+                </div>
+
+                {{-- Bid Form --}}
+                <form action="{{ route('bids.store', $auction->id) }}" method="POST">
+                    @csrf
+
+                    <label class="block text-gray-300 mb-2">
+                        Masukkan Bid
+                    </label>
+
+                    <input
+                        type="number"
+                        name="amount"
+                        class="w-full rounded-xl bg-slate-700 border border-slate-600 text-white px-4 py-3 mb-4"
+                        placeholder="Masukkan nominal bid"
+                    >
+
+                    <button
+                        type="submit"
+                        class="w-full bg-gradient-to-r from-green-500 to-blue-500 py-3 rounded-xl font-bold text-white hover:scale-105 transition"
+                    >
+                        🚀 Tawar Sekarang
+                    </button>
+                </form>
+
             </div>
-        @endif
+        </div>
 
-        <form
-            action="{{ route('bids.store', $auction->id) }}"
-            method="POST">
+        {{-- BID HISTORY --}}
+        <div class="mt-8 bg-slate-800 rounded-2xl p-6 shadow-lg">
+            <h2 class="text-2xl font-bold text-white mb-4">
+                Riwayat Bid
+            </h2>
 
-            @csrf
+            @forelse($auction->bids as $bid)
+                <div class="flex justify-between items-center border-b border-slate-700 py-3">
+                    <div>
+                        <p class="text-white font-semibold">
+                            {{ $bid->user->name }}
+                        </p>
+                        <p class="text-gray-400 text-sm">
+                            {{ $bid->created_at->diffForHumans() }}
+                        </p>
+                    </div>
 
-            <input
-                type="number"
-                name="amount"
-                class="border rounded p-2 w-full">
-
-            <button
-                id="bidButton"
-                class="bg-green-600 text-white px-4 py-2 mt-2 rounded">
-
-                Tawar
-
-            </button>
-
-        </form>
-
-        <hr class="my-6">
-
-        <h2 class="text-xl font-bold mb-3">
-            Riwayat Bid
-        </h2>
-
-        @if($auction->bids->count())
-
-            @php
-                $highest = $auction->bids->max('amount');
-            @endphp
-
-            <table class="w-full border">
-                <thead>
-                    <tr>
-                        <th class="border p-2">User</th>
-                        <th class="border p-2">Bid</th>
-                        <th class="border p-2">Waktu</th>
-                    </tr>
-                </thead>
-
-                <tbody>
-                    @foreach($auction->bids->sortByDesc('amount') as $bid)
-
-                        <tr class="{{ $bid->amount == $highest ? 'bg-green-100' : '' }}">
-
-                            <td class="border p-2">
-                                {{ $bid->user->name }}
-                            </td>
-
-                            <td class="border p-2">
-                                Rp {{ number_format($bid->amount, 0, ',', '.') }}
-                            </td>
-
-                            <td class="border p-2">
-                                {{ $bid->created_at }}
-                            </td>
-
-                        </tr>
-
-                    @endforeach
-                </tbody>
-            </table>
-
-        @else
-
-            <p>Belum ada bid.</p>
-
-        @endif
+                    <p class="text-green-400 font-bold text-lg">
+                        Rp {{ number_format($bid->amount,0,',','.') }}
+                    </p>
+                </div>
+            @empty
+                <p class="text-gray-400">
+                    Belum ada bid.
+                </p>
+            @endforelse
+        </div>
 
     </div>
-
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-
-            const countdownElement =
-                document.getElementById("countdown");
-
-            const bidButton =
-                document.getElementById("bidButton");
-
-            const endTime = new Date(
-                "{{ \Carbon\Carbon::parse($auction->end_time)->toIso8601String() }}"
-            ).getTime();
-
-            const timer = setInterval(function () {
-
-                const now = new Date().getTime();
-                const distance = endTime - now;
-
-                if (distance <= 0) {
-                    clearInterval(timer);
-
-                    countdownElement.innerHTML =
-                        "LELANG BERAKHIR";
-
-                    countdownElement.classList.remove("text-blue-600");
-                    countdownElement.classList.add("text-red-600");
-
-                    if (bidButton) {
-                        bidButton.disabled = true;
-                        bidButton.classList.add("opacity-50");
-                    }
-
-                    return;
-                }
-
-                const days = Math.floor(
-                    distance / (1000 * 60 * 60 * 24)
-                );
-
-                const hours = Math.floor(
-                    (distance % (1000 * 60 * 60 * 24)) /
-                    (1000 * 60 * 60)
-                );
-
-                const minutes = Math.floor(
-                    (distance % (1000 * 60 * 60)) /
-                    (1000 * 60)
-                );
-
-                const seconds = Math.floor(
-                    (distance % (1000 * 60)) / 1000
-                );
-
-                countdownElement.innerHTML =
-                    days + "h " +
-                    hours + "j " +
-                    minutes + "m " +
-                    seconds + "d";
-
-                if (distance < 3600000) {
-                    countdownElement.classList.remove("text-blue-600");
-                    countdownElement.classList.add("text-red-600");
-                }
-
-            }, 1000);
-        });
-    </script>
-
 </x-app-layout>

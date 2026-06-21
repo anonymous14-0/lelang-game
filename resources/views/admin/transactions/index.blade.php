@@ -1,63 +1,119 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="text-xl font-bold">
-            Verifikasi Pembayaran
+        <h2 class="text-2xl font-bold text-white">
+            🛡 Verifikasi Pembayaran
         </h2>
     </x-slot>
 
-    <div class="p-6">
+    <div class="min-h-screen bg-slate-950 py-8 px-6">
+        <div class="max-w-7xl mx-auto space-y-6">
 
-        @foreach($transactions as $transaction)
+            @forelse($transactions as $transaction)
 
-            <div class="border p-4 rounded mb-4">
+                <div class="bg-slate-800 border border-slate-700 rounded-3xl shadow-xl p-6">
 
-                <h3>
-                    {{ $transaction->auction->item->title }}
-                </h3>
+                    {{-- Header --}}
+                    <div class="flex justify-between items-start mb-6">
+                        <div>
+                            <h3 class="text-2xl font-bold text-white">
+                                {{ $transaction->auction->item->title }}
+                            </h3>
 
-                <p>Buyer: {{ $transaction->buyer->name }}</p>
-                <p>Status: {{ $transaction->status }}</p>
-                <p>Nominal: Rp {{ number_format($transaction->amount,0,',','.') }}</p>
+                            <p class="text-gray-400 mt-2">
+                                Buyer:
+                                <span class="text-blue-400 font-semibold">
+                                    {{ $transaction->buyer->name }}
+                                </span>
+                            </p>
 
-                @if($transaction->payment_proof)
-                    <img
-                        src="{{ asset('storage/'.$transaction->payment_proof) }}"
-                        class="w-48 mb-3">
-                @endif
+                            <p class="text-gray-400 mt-1">
+                                Nominal:
+                                <span class="text-green-400 font-bold">
+                                    Rp {{ number_format($transaction->amount,0,',','.') }}
+                                </span>
+                            </p>
+                        </div>
 
-                <form
-                    action="{{ route('admin.transactions.verify',$transaction->id) }}"
-                    method="POST"
-                    class="inline">
+                        @php
+                            $statusColor = match($transaction->status) {
+                                'pending' => 'bg-yellow-500',
+                                'paid' => 'bg-blue-500',
+                                'verified' => 'bg-green-500',
+                                default => 'bg-gray-500'
+                            };
+                        @endphp
 
-                    @csrf
+                        <span class="{{ $statusColor }} px-4 py-2 rounded-xl text-white font-semibold">
+                            {{ strtoupper($transaction->status) }}
+                        </span>
+                    </div>
 
-                    <button class="bg-green-500 text-white px-3 py-1 rounded">
-                        Verifikasi
-                    </button>
-                </form>
+                    {{-- Bukti Transfer --}}
+                    <div class="mb-6">
+                        <p class="text-gray-300 font-semibold mb-3">
+                            Bukti Transfer
+                        </p>
 
-                <form
-                    action="{{ route('admin.transactions.reject',$transaction->id) }}"
-                    method="POST"
-                    class="inline">
+                        @if($transaction->payment_proof)
+                            <img
+                                src="{{ asset('storage/'.$transaction->payment_proof) }}"
+                                class="w-72 rounded-2xl border border-slate-600 shadow-lg"
+                            >
+                        @else
+                            <div class="bg-slate-700 rounded-xl p-4 text-gray-400">
+                                Belum ada bukti transfer
+                            </div>
+                        @endif
+                    </div>
 
-                    @csrf
+                    {{-- Action Buttons --}}
+                    <div class="grid md:grid-cols-2 gap-6">
 
-                    <input
-                        type="text"
-                        name="admin_note"
-                        placeholder="Alasan ditolak"
-                        class="border p-1 rounded">
+                        {{-- Verify --}}
+                        <form
+                            action="{{ route('admin.transactions.verify',$transaction->id) }}"
+                            method="POST"
+                        >
+                            @csrf
 
-                    <button class="bg-red-500 text-white px-3 py-1 rounded">
-                        Tolak
-                    </button>
-                </form>
+                            <button
+                                class="w-full bg-gradient-to-r from-green-500 to-emerald-600 py-3 rounded-xl text-white font-bold hover:scale-[1.02] transition"
+                            >
+                                ✅ Verifikasi Pembayaran
+                            </button>
+                        </form>
 
-            </div>
+                        {{-- Reject --}}
+                        <form
+                            action="{{ route('admin.transactions.reject',$transaction->id) }}"
+                            method="POST"
+                            class="space-y-3"
+                        >
+                            @csrf
 
-        @endforeach
+                            <input
+                                type="text"
+                                name="admin_note"
+                                placeholder="Masukkan alasan penolakan"
+                                class="w-full rounded-xl bg-slate-700 border border-slate-600 text-white px-4 py-3 focus:ring-2 focus:ring-red-500 focus:outline-none"
+                            >
 
+                            <button
+                                class="w-full bg-gradient-to-r from-red-500 to-rose-600 py-3 rounded-xl text-white font-bold hover:scale-[1.02] transition"
+                            >
+                                ❌ Tolak Pembayaran
+                            </button>
+                        </form>
+
+                    </div>
+                </div>
+
+            @empty
+                <div class="bg-slate-800 rounded-3xl p-12 text-center text-gray-400">
+                    Tidak ada transaksi yang perlu diverifikasi
+                </div>
+            @endforelse
+
+        </div>
     </div>
 </x-app-layout>

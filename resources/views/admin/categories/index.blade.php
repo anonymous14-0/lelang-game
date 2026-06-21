@@ -1,60 +1,70 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            Kelola Kategori
+        <h2 class="text-2xl font-bold text-white">
+            🗂 Kelola Kategori
         </h2>
     </x-slot>
 
-    <div class="py-6">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+    <div class="min-h-screen bg-slate-950 py-8 px-6">
+        <div class="max-w-7xl mx-auto">
 
-            <div class="mb-4">
+            {{-- Top Bar --}}
+            <div class="flex justify-between items-center mb-6">
+                <div>
+                    <h1 class="text-3xl font-bold text-white">
+                        Daftar Kategori
+                    </h1>
+                    <p class="text-gray-400">
+                        Kelola kategori item game di marketplace
+                    </p>
+                </div>
+
                 <a href="{{ route('admin.categories.create') }}"
-                   class="inline-flex items-center px-4 py-2 bg-indigo-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-indigo-700">
+                   class="bg-gradient-to-r from-purple-600 to-blue-600 px-5 py-3 rounded-xl font-semibold text-white hover:scale-105 transition">
                     + Tambah Kategori
                 </a>
             </div>
 
-            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6">
+            {{-- Table Card --}}
+            <div class="bg-slate-800 border border-slate-700 rounded-3xl shadow-2xl overflow-hidden">
 
-                    <table class="min-w-full divide-y divide-gray-700">
-                        <thead>
-                            <tr>
-                                <th class="px-4 py-3 text-left">ID</th>
-                                <th class="px-4 py-3 text-left">Nama</th>
-                                <th class="px-4 py-3 text-left">Deskripsi</th>
-                            </tr>
-                        </thead>
+                <table class="w-full">
+                    <thead class="bg-slate-700">
+                        <tr>
+                            <th class="px-6 py-4 text-left text-gray-300">ID</th>
+                            <th class="px-6 py-4 text-left text-gray-300">Nama</th>
+                            <th class="px-6 py-4 text-left text-gray-300">Deskripsi</th>
+                        </tr>
+                    </thead>
 
-                        <tbody class="divide-y divide-gray-700">
-                            @forelse($categories as $category)
-                                <tr>
-                                    <td class="px-4 py-3">
-                                        {{ $category->id }}
-                                    </td>
+                    <tbody>
+                        @forelse($categories as $category)
+                            <tr class="border-t border-slate-700 hover:bg-slate-700/40 transition">
+                                <td class="px-6 py-4 text-gray-300">
+                                    #{{ $category->id }}
+                                </td>
 
-                                    <td class="px-4 py-3">
+                                <td class="px-6 py-4">
+                                    <span class="bg-blue-500/20 text-blue-400 px-3 py-1 rounded-lg">
                                         {{ $category->name }}
-                                    </td>
+                                    </span>
+                                </td>
 
-                                    <td class="px-4 py-3">
-                                        {{ $category->description }}
-                                    </td>
-                                </tr>
-                            @empty
-                                <tr>
-                                    <td colspan="3" class="px-4 py-3 text-center">
-                                        Belum ada kategori
-                                    </td>
-                                </tr>
-                            @endforelse
-                        </tbody>
-                    </table>
+                                <td class="px-6 py-4 text-gray-400">
+                                    {{ $category->description ?: '-' }}
+                                </td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="3" class="text-center py-12 text-gray-500">
+                                    Belum ada kategori
+                                </td>
+                            </tr>
+                        @endforelse
+                    </tbody>
+                </table>
 
-                </div>
             </div>
-
         </div>
     </div>
 </x-app-layout>

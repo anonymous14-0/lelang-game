@@ -5,7 +5,7 @@
         </h2>
     </x-slot>
 
-    <div class="p-6">
+    <div class="p-0">
 
         {{-- HERO --}}
         <div class="bg-gradient-to-r from-blue-600 to-indigo-700 rounded-2xl p-6 text-white shadow-lg mb-8">

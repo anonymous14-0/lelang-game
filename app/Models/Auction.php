@@ -15,6 +15,11 @@ class Auction extends Model
         'winner_id',
         'status',
     ];
+    protected $casts = [
+        'start_time' => 'datetime',
+        'end_time' => 'datetime',
+    ];
+
 
     public function item()
     {
