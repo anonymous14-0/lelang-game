@@ -11,6 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
+        // Membuat tabel baru beserta kolom dan relasinya.
         Schema::create('jobs', function (Blueprint $table) {
             $table->id();
             $table->string('queue')->index();
@@ -50,6 +51,7 @@ return new class extends Migration
      */
     public function down(): void
     {
+        // Menghapus tabel saat rollback migration.
         Schema::dropIfExists('jobs');
         Schema::dropIfExists('job_batches');
         Schema::dropIfExists('failed_jobs');

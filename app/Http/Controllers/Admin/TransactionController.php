@@ -6,8 +6,10 @@ use App\Http\Controllers\Controller;
 use App\Models\Transaction;
 use Illuminate\Http\Request;
 
+// Controller untuk mengelola daftar dan status transaksi.
 class TransactionController extends Controller
 {
+    // Menampilkan data utama pada halaman index.
     public function index()
     {
         $transactions = Transaction::with([

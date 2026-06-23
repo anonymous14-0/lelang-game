@@ -9,6 +9,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use App\Models\Item;
 use App\Models\Bid;
+// Model user aplikasi dengan role admin, penjual, dan pembeli.
 class User extends Authenticatable
 {
     /** @use HasFactory<UserFactory> */
@@ -19,6 +20,7 @@ class User extends Authenticatable
      *
      * @var list<string>
      */
+    // Kolom user yang boleh diisi melalui registrasi atau seeder.
     protected $fillable = [
         'name',
         'email',
@@ -31,6 +33,7 @@ class User extends Authenticatable
      *
      * @var list<string>
      */
+    // Kolom sensitif yang disembunyikan saat model diserialisasi.
     protected $hidden = [
         'password',
         'remember_token',
@@ -41,6 +44,7 @@ class User extends Authenticatable
      *
      * @return array<string, string>
      */
+    // Mengatur casting otomatis untuk verifikasi email dan password.
     protected function casts(): array
     {
         return [
@@ -48,11 +52,13 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+    // Relasi user penjual dengan item yang dimiliki.
     public function items()
         {
             return $this->hasMany(Item::class);
         }
 
+        // Relasi user pembeli dengan bid yang pernah dibuat.
         public function bids()
         {
             return $this->hasMany(Bid::class);

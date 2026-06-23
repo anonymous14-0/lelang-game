@@ -7,8 +7,10 @@ use App\Models\Auction;
 use App\Models\Bid;
 use App\Models\Transaction;
 
+// Controller untuk menampilkan ringkasan dashboard pengguna.
 class DashboardController extends Controller
 {
+    // Menampilkan data utama pada halaman index.
     public function index()
     {
         $activeAuctions = Auction::where(

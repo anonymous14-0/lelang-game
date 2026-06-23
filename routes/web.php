@@ -14,24 +14,31 @@ use App\Http\Controllers\Penjual\TransactionController as PenjualTransactionCont
 use App\Http\Controllers\Penjual\DashboardController as PenjualDashboardController;
 use App\Http\Controllers\Admin\AdminDashboardController;
 
+// Halaman utama aplikasi.
 Route::view('/', 'welcome');
 
+// Redirect dashboard umum ke dashboard sesuai role pengguna.
 Route::get('/dashboard', function () {
 
+    // Ambil user yang sedang login untuk menentukan tujuan dashboard.
     $user = Auth::user();
 
+    // Admin diarahkan ke dashboard khusus admin.
     if ($user->role === 'admin') {
         return redirect('/admin/dashboard');
     }
 
+    // Penjual diarahkan ke dashboard khusus penjual.
     if ($user->role === 'penjual') {
         return redirect('/penjual/dashboard');
     }
 
+    // Role pembeli diarahkan ke dashboard pembeli.
     return redirect('/pembeli/dashboard');
 
 })->middleware(['auth'])->name('dashboard');
 
+// Halaman profil hanya tersedia untuk pengguna yang sudah login.
 Route::view('profile', 'profile')
     ->middleware(['auth'])
     ->name('profile');
@@ -41,6 +48,7 @@ Route::view('profile', 'profile')
 |--------------------------------------------------------------------------
 */
 
+// Kumpulan route admin yang dilindungi autentikasi dan role admin.
 Route::middleware(['auth', 'role:admin'])
     ->group(function () {
 
@@ -75,6 +83,7 @@ Route::middleware(['auth', 'role:admin'])
 |--------------------------------------------------------------------------
 */
 
+// Kumpulan route penjual yang dilindungi autentikasi dan role penjual.
 Route::middleware(['auth', 'role:penjual'])
     ->group(function () {
 
@@ -109,6 +118,7 @@ Route::middleware(['auth', 'role:penjual'])
 |--------------------------------------------------------------------------
 */
 
+// Kumpulan route pembeli yang dilindungi autentikasi dan role pembeli.
 Route::middleware(['auth', 'role:pembeli'])
     ->group(function () {
 
@@ -120,6 +130,7 @@ Route::middleware(['auth', 'role:pembeli'])
             '/pembeli/auctions',
             [PembeliAuctionController::class, 'index']
         )->name('pembeli.auctions.index');
+        // Route untuk mengirim bid pada lelang tertentu.
         Route::post(
             '/auctions/{auction}/bid',
             [BidController::class, 'store']
