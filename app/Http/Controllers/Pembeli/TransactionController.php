@@ -7,8 +7,10 @@ use App\Models\Transaction;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt;
 
+// Controller untuk mengelola daftar dan status transaksi.
 class TransactionController extends Controller
 {
+    // Menampilkan data utama pada halaman index.
     public function index()
     {
         $transactions = Transaction::with('auction.item')
@@ -22,14 +24,17 @@ class TransactionController extends Controller
         );
     }
 
+    // Mengupload bukti pembayaran transaksi pembeli.
     public function uploadProof(
         Request $request,
         Transaction $transaction
     ) {
+        // Validasi bukti pembayaran harus berupa gambar.
         $request->validate([
             'payment_proof' => 'required|image'
         ]);
 
+        // Simpan file bukti pembayaran ke storage public.
         $path = $request
             ->file('payment_proof')
             ->store('payments', 'public');
@@ -66,6 +71,7 @@ class TransactionController extends Controller
         );
     }
 
+    // Menandai transaksi selesai setelah akun diterima pembeli.
     public function complete(Transaction $transaction)
     {
         if ($transaction->buyer_id !== auth()->id()) {

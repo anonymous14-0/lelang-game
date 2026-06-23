@@ -6,11 +6,13 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Auction;
 use App\Models\Item;
+// Controller untuk mengelola data lelang sesuai area pengguna.
 class AuctionController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
+    // Menampilkan data utama pada halaman index.
     public function index()
     {
         $auctions = Auction::with('item')

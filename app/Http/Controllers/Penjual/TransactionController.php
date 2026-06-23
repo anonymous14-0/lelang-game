@@ -7,8 +7,10 @@ use App\Models\Transaction;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt;
 
+// Controller untuk mengelola daftar dan status transaksi.
 class TransactionController extends Controller
 {
+    // Menampilkan data utama pada halaman index.
     public function index()
     {
         $transactions = Transaction::with([
@@ -25,10 +27,12 @@ class TransactionController extends Controller
         );
     }
 
+    // Mengirim data akun kepada pembeli setelah pembayaran masuk escrow.
     public function sendAccount(
         Request $request,
         Transaction $transaction
     ) {
+        // Validasi data akun sebelum dikirim ke pembeli.
         $request->validate([
             'account_email' => 'required',
             'account_password' => 'required',
@@ -37,6 +41,7 @@ class TransactionController extends Controller
         $transaction->update([
             'account_email' => $request->account_email,
 
+            // Enkripsi password akun sebelum disimpan.
             'account_password' => Crypt::encryptString(
                 $request->account_password
             ),

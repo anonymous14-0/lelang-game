@@ -6,11 +6,13 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Item;
 use App\Models\Category;
+// Controller untuk mengelola item milik penjual.
 class ItemController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
+    // Menampilkan data utama pada halaman index.
     public function index()
     {
         $items = Item::where(

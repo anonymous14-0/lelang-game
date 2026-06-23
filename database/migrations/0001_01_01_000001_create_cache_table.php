@@ -11,6 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
+        // Membuat tabel baru beserta kolom dan relasinya.
         Schema::create('cache', function (Blueprint $table) {
             $table->string('key')->primary();
             $table->mediumText('value');
@@ -29,6 +30,7 @@ return new class extends Migration
      */
     public function down(): void
     {
+        // Menghapus tabel saat rollback migration.
         Schema::dropIfExists('cache');
         Schema::dropIfExists('cache_locks');
     }

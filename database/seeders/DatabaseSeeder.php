@@ -7,6 +7,7 @@ use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 
+// Seeder untuk membuat akun demo awal aplikasi.
 class DatabaseSeeder extends Seeder
 {
     use WithoutModelEvents;
@@ -14,6 +15,7 @@ class DatabaseSeeder extends Seeder
     /**
      * Seed the application's database.
      */
+    // Menjalankan pembuatan user demo untuk setiap role utama.
     public function run(): void
     {
         User::create([

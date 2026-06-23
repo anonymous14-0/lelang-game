@@ -8,6 +8,7 @@ return new class extends Migration
 {
     public function up(): void
     {
+        // Menambahkan kolom akun ke tabel transaksi.
         Schema::table('transactions', function (Blueprint $table) {
             $table->string('account_email')->nullable();
 
@@ -20,6 +21,7 @@ return new class extends Migration
 
     public function down(): void
     {
+        // Menghapus kolom akun saat rollback migration.
         Schema::table('transactions', function (Blueprint $table) {
             $table->dropColumn([
                 'account_email',

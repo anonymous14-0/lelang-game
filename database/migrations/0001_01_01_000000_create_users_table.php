@@ -11,6 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
+        // Membuat tabel baru beserta kolom dan relasinya.
         Schema::create('users', function (Blueprint $table) {
             $table->id();
             $table->string('name');
@@ -47,6 +48,7 @@ return new class extends Migration
      */
     public function down(): void
     {
+        // Menghapus tabel saat rollback migration.
         Schema::dropIfExists('users');
         Schema::dropIfExists('password_reset_tokens');
         Schema::dropIfExists('sessions');
