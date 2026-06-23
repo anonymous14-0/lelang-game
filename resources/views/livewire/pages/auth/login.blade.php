@@ -33,25 +33,24 @@ new #[Layout('layouts.guest')] class extends Component
 
 ?>
 
-<div class="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-900 via-blue-900 to-purple-900 px-4">
-
-    <div class="w-full max-w-md bg-white rounded-2xl shadow-2xl p-8">
+<div class="w-full max-w-md">
+    <div class="bg-white rounded-3xl shadow-2xl p-6 md:p-8">
 
         {{-- Header --}}
         <div class="text-center mb-8">
-            <h1 class="text-3xl font-bold text-purple-700">
+            <h1 class="text-3xl md:text-4xl font-bold text-purple-700">
                 🎮 GameBid
             </h1>
 
-            <p class="text-gray-500 mt-2">
+            <p class="text-gray-500 mt-3 text-sm md:text-base">
                 Login untuk mulai bidding item game favoritmu
             </p>
         </div>
 
-        <form wire:submit="login">
+        <form wire:submit="login" class="space-y-5">
 
             {{-- Email --}}
-            <div class="mb-5">
+            <div>
                 <label class="block mb-2 text-gray-700 font-medium">
                     Email
                 </label>
@@ -59,7 +58,9 @@ new #[Layout('layouts.guest')] class extends Component
                 <input
                     type="email"
                     wire:model="form.email"
-                    class="w-full rounded-xl border border-gray-300 px-4 py-3 focus:ring-2 focus:ring-purple-500 focus:outline-none"
+                    placeholder="Masukkan email"
+                    class="w-full rounded-2xl border border-gray-300 px-4 py-3
+                           focus:ring-2 focus:ring-purple-500 focus:outline-none"
                 >
 
                 @error('form.email')
@@ -68,7 +69,7 @@ new #[Layout('layouts.guest')] class extends Component
             </div>
 
             {{-- Password --}}
-            <div class="mb-5">
+            <div>
                 <label class="block mb-2 text-gray-700 font-medium">
                     Password
                 </label>
@@ -76,7 +77,9 @@ new #[Layout('layouts.guest')] class extends Component
                 <input
                     type="password"
                     wire:model="form.password"
-                    class="w-full rounded-xl border border-gray-300 px-4 py-3 focus:ring-2 focus:ring-purple-500 focus:outline-none"
+                    placeholder="Masukkan password"
+                    class="w-full rounded-2xl border border-gray-300 px-4 py-3
+                           focus:ring-2 focus:ring-purple-500 focus:outline-none"
                 >
 
                 @error('form.password')
@@ -85,13 +88,14 @@ new #[Layout('layouts.guest')] class extends Component
             </div>
 
             {{-- Remember --}}
-            <div class="flex items-center mb-6">
+            <div class="flex items-center gap-2">
                 <input
                     type="checkbox"
                     wire:model="form.remember"
-                    class="mr-2"
+                    class="w-4 h-4"
                 >
-                <span class="text-gray-600">
+
+                <span class="text-gray-600 text-sm">
                     Remember me
                 </span>
             </div>
@@ -99,13 +103,15 @@ new #[Layout('layouts.guest')] class extends Component
             {{-- Button --}}
             <button
                 type="submit"
-                class="w-full bg-purple-600 hover:bg-purple-700 text-white py-3 rounded-xl font-semibold transition"
+                class="w-full bg-purple-600 hover:bg-purple-700
+                       text-white py-3 rounded-2xl font-semibold
+                       transition duration-200 shadow-md"
             >
                 LOGIN
             </button>
 
             {{-- Register --}}
-            <div class="text-center mt-6 text-gray-500">
+            <div class="text-center pt-3 text-gray-500 text-sm">
                 Belum punya akun?
                 <a href="{{ route('register') }}"
                    class="text-purple-600 font-semibold hover:underline">

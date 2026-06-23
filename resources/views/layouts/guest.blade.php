@@ -25,19 +25,12 @@
          background-size: 40px 40px;">
     </div>
 
-    {{-- Glow Effects --}}
+    {{-- Glow --}}
     <div class="absolute top-20 left-20 w-96 h-96 bg-purple-600 rounded-full blur-[160px] opacity-20"></div>
     <div class="absolute bottom-20 right-20 w-96 h-96 bg-blue-600 rounded-full blur-[160px] opacity-20"></div>
 
-    {{-- Logo/Header --}}
-    <div class="absolute top-8 left-1/2 -translate-x-1/2 z-20">
-        <h1 class="text-3xl font-bold text-white tracking-wide">
-            🎮 <span class="text-purple-400">GameBid</span>
-        </h1>
-    </div>
-
     {{-- Content --}}
-    <div class="relative z-10 min-h-screen flex items-center justify-center px-4">
+    <div class="relative z-10 min-h-screen flex items-center justify-center px-4 py-8">
         {{ $slot }}
     </div>
 

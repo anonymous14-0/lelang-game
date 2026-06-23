@@ -16,15 +16,24 @@ new #[Layout('layouts.guest')] class extends Component
     public string $password_confirmation = '';
     public string $role = 'pembeli';
 
-    /**
-     * Handle an incoming registration request.
-     */
     public function register(): void
     {
         $validated = $this->validate([
             'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
-            'password' => ['required', 'string', 'confirmed', Rules\Password::defaults()],
+            'email' => [
+                'required',
+                'string',
+                'lowercase',
+                'email',
+                'max:255',
+                'unique:' . User::class
+            ],
+            'password' => [
+                'required',
+                'string',
+                'confirmed',
+                Rules\Password::defaults()
+            ],
             'role' => ['required', 'in:penjual,pembeli'],
         ]);
 
@@ -44,71 +53,156 @@ new #[Layout('layouts.guest')] class extends Component
             return;
         }
 
-          $this->redirect('/pembeli/dashboard', navigate: true);
+        $this->redirect('/pembeli/dashboard', navigate: true);
     }
-}; ?>
+};
 
-<div>
-    <form wire:submit="register">
-        <!-- Name -->
-        <div>
-            <x-input-label for="name" :value="__('Name')" />
-            <x-text-input wire:model="name" id="name" class="block mt-1 w-full" type="text" name="name" required autofocus autocomplete="name" />
-            <x-input-error :messages="$errors->get('name')" class="mt-2" />
+?>
+
+<div class="w-full max-w-md">
+    <div class="bg-white rounded-3xl shadow-2xl p-6 md:p-8">
+
+        {{-- Header --}}
+        <div class="text-center mb-8">
+            <h1 class="text-3xl md:text-4xl font-bold text-purple-700">
+                🎮 GameBid
+            </h1>
+
+            <h2 class="text-2xl font-semibold text-gray-800 mt-3">
+                Selamat Datang di Register
+            </h2>
+
+            <p class="text-gray-500 mt-2">
+                Silakan buat akun untuk mulai bidding
+            </p>
         </div>
 
-        <!-- Email Address -->
-        <div class="mt-4">
-            <x-input-label for="email" :value="__('Email')" />
-            <x-text-input wire:model="email" id="email" class="block mt-1 w-full" type="email" name="email" required autocomplete="username" />
-            <x-input-error :messages="$errors->get('email')" class="mt-2" />
-        </div>
-        <!-- Role -->
-        <div class="mt-4">
-             <x-input-label for="role" :value="__('Daftar Sebagai')" />
+        <form wire:submit="register" class="space-y-5">
 
-            <select
-                wire:model="role"
-                id="role"
-                class="block mt-1 w-full border-gray-300 rounded-md shadow-sm"
-            >
-                <option value="pembeli">Pembeli</option>
-                <option value="penjual">Penjual</option>
-            </select>
+            {{-- Nama --}}
+            <div>
+                <label class="block mb-2 text-gray-700 font-medium">
+                    Nama
+                </label>
 
-            <x-input-error :messages="$errors->get('role')" class="mt-2" />
+                <input
+                    wire:model="name"
+                    id="name"
+                    type="text"
+                    placeholder="Masukkan nama"
+                    class="w-full rounded-2xl border border-gray-300 px-4 py-3
+                           focus:ring-2 focus:ring-purple-500 focus:outline-none"
+                >
+
+                @error('name')
+                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                @enderror
             </div>
-        <!-- Password -->
-        <div class="mt-4">
-            <x-input-label for="password" :value="__('Password')" />
 
-            <x-text-input wire:model="password" id="password" class="block mt-1 w-full"
-                            type="password"
-                            name="password"
-                            required autocomplete="new-password" />
+            {{-- Email --}}
+            <div>
+                <label class="block mb-2 text-gray-700 font-medium">
+                    Email
+                </label>
 
-            <x-input-error :messages="$errors->get('password')" class="mt-2" />
-        </div>
+                <input
+                    wire:model="email"
+                    id="email"
+                    type="email"
+                    placeholder="Masukkan email"
+                    class="w-full rounded-2xl border border-gray-300 px-4 py-3
+                           focus:ring-2 focus:ring-purple-500 focus:outline-none"
+                >
 
-        <!-- Confirm Password -->
-        <div class="mt-4">
-            <x-input-label for="password_confirmation" :value="__('Confirm Password')" />
+                @error('email')
+                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                @enderror
+            </div>
 
-            <x-text-input wire:model="password_confirmation" id="password_confirmation" class="block mt-1 w-full"
-                            type="password"
-                            name="password_confirmation" required autocomplete="new-password" />
+            {{-- Role --}}
+            <div>
+                <label class="block mb-2 text-gray-700 font-medium">
+                    Daftar Sebagai
+                </label>
 
-            <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
-        </div>
+                <select
+                    wire:model="role"
+                    id="role"
+                    class="w-full rounded-2xl border border-gray-300 px-4 py-3
+                           focus:ring-2 focus:ring-purple-500 focus:outline-none"
+                >
+                    <option value="pembeli">Pembeli</option>
+                    <option value="penjual">Penjual</option>
+                </select>
 
-        <div class="flex items-center justify-end mt-4">
-            <a class="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800" href="{{ route('login') }}" wire:navigate>
-                {{ __('Already registered?') }}
-            </a>
+                @error('role')
+                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                @enderror
+            </div>
 
-            <x-primary-button class="ms-4">
-                {{ __('Register') }}
-            </x-primary-button>
-        </div>
-    </form>
+            {{-- Password --}}
+            <div>
+                <label class="block mb-2 text-gray-700 font-medium">
+                    Password
+                </label>
+
+                <input
+                    wire:model="password"
+                    id="password"
+                    type="password"
+                    placeholder="Masukkan password"
+                    class="w-full rounded-2xl border border-gray-300 px-4 py-3
+                           focus:ring-2 focus:ring-purple-500 focus:outline-none"
+                >
+
+                @error('password')
+                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                @enderror
+            </div>
+
+            {{-- Confirm Password --}}
+            <div>
+                <label class="block mb-2 text-gray-700 font-medium">
+                    Confirm Password
+                </label>
+
+                <input
+                    wire:model="password_confirmation"
+                    id="password_confirmation"
+                    type="password"
+                    placeholder="Ulangi password"
+                    class="w-full rounded-2xl border border-gray-300 px-4 py-3
+                           focus:ring-2 focus:ring-purple-500 focus:outline-none"
+                >
+
+                @error('password_confirmation')
+                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                @enderror
+            </div>
+
+            {{-- Footer --}}
+            <div class="pt-2">
+                <div class="text-center text-sm text-gray-500 mb-4">
+                    Sudah punya akun?
+                    <a
+                        href="{{ route('login') }}"
+                        wire:navigate
+                        class="text-purple-600 font-semibold hover:underline"
+                    >
+                        Login
+                    </a>
+                </div>
+
+                <button
+                    type="submit"
+                    class="w-full bg-purple-600 hover:bg-purple-700
+                           text-white py-3 rounded-2xl font-semibold
+                           transition duration-200 shadow-md"
+                >
+                    REGISTER
+                </button>
+            </div>
+
+        </form>
+    </div>
 </div>
