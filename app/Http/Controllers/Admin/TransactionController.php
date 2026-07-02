@@ -10,19 +10,23 @@ use Illuminate\Http\Request;
 class TransactionController extends Controller
 {
     // Menampilkan data utama pada halaman index.
+    
+
     public function index()
     {
         $transactions = Transaction::with([
             'buyer',
             'auction.item'
-        ])->latest()->get();
+        ])
+        ->where('status', 'payment_verified')
+        ->latest()
+        ->get();
 
         return view(
             'admin.transactions.index',
             compact('transactions')
         );
     }
-
     public function verify(Transaction $transaction)
     {
         $transaction->update([
@@ -34,7 +38,6 @@ class TransactionController extends Controller
             'Pembayaran berhasil diverifikasi'
         );
     }
-
     public function reject(
         Request $request,
         Transaction $transaction

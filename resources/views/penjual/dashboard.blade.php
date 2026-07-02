@@ -49,27 +49,51 @@
             Quick Actions
         </h3>
 
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
 
+            {{-- Tambah Item --}}
             <a
                 href="{{ route('penjual.items.create') }}"
-                class="bg-indigo-600 hover:bg-indigo-700 text-white p-5 rounded-xl text-center shadow">
+                class="bg-indigo-600 hover:bg-indigo-700 text-white p-5 rounded-xl text-center shadow hover:scale-105 transition">
 
-                + Tambah Item
+                <div class="text-2xl mb-2">➕</div>
+                Tambah Item
             </a>
 
+            {{-- Lihat Item --}}
+            <a
+                href="{{ route('penjual.items.index') }}"
+                class="bg-blue-600 hover:bg-blue-700 text-white p-5 rounded-xl text-center shadow hover:scale-105 transition">
+
+                <div class="text-2xl mb-2">📦</div>
+                Daftar Item
+            </a>
+
+            {{-- Buat Lelang --}}
             <a
                 href="{{ route('penjual.auctions.create') }}"
-                class="bg-green-600 hover:bg-green-700 text-white p-5 rounded-xl text-center shadow">
+                class="bg-green-600 hover:bg-green-700 text-white p-5 rounded-xl text-center shadow hover:scale-105 transition">
 
-                + Buat Lelang
+                <div class="text-2xl mb-2">🔥</div>
+                Buat Lelang
             </a>
 
+            {{-- Lihat Auction --}}
+            <a
+                href="{{ route('penjual.auctions.index') }}"
+                class="bg-purple-600 hover:bg-purple-700 text-white p-5 rounded-xl text-center shadow hover:scale-105 transition">
+
+                <div class="text-2xl mb-2">🏷️</div>
+                Daftar Lelang
+            </a>
+
+            {{-- Transaksi --}}
             <a
                 href="{{ route('penjual.transactions.index') }}"
-                class="bg-yellow-500 hover:bg-yellow-600 text-white p-5 rounded-xl text-center shadow">
+                class="bg-yellow-500 hover:bg-yellow-600 text-white p-5 rounded-xl text-center shadow hover:scale-105 transition">
 
-                Lihat Transaksi
+                <div class="text-2xl mb-2">💰</div>
+                Transaksi
             </a>
 
         </div>
