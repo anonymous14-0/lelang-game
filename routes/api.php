@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\AuctionController;
+use App\Http\Controllers\Api\BidController;
 
 Route::get('/test', function () {
     return response()->json([
@@ -23,4 +24,9 @@ Route::get('/auctions/{auction}', [AuctionController::class, 'show']);
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/user', [AuthController::class, 'user']);
     Route::post('/logout', [AuthController::class, 'logout']);
+
+    Route::post(
+        '/auctions/{auction}/bid',
+        [BidController::class, 'store']
+    );
 });
