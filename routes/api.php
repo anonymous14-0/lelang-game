@@ -5,7 +5,8 @@ use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\AuctionController;
 use App\Http\Controllers\Api\BidController;
 use App\Http\Controllers\Api\TransactionController;
-
+use App\Http\Controllers\Api\ItemController;
+use App\Http\Controllers\Api\CategoryController;
 Route::get('/test', function () {
     return response()->json([
         'message' => 'API jalan'
@@ -53,5 +54,22 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post(
         '/transactions/{transaction}/complete',
         [TransactionController::class, 'complete']
+    );
+    Route::get(
+        '/seller/auctions',
+        [AuctionController::class, 'sellerAuctions']
+    );
+    Route::post(
+        '/seller/auctions',
+        [AuctionController::class, 'storeMobile']
+    );
+    Route::get(
+        '/seller/items',
+        [AuctionController::class, 'sellerItems']
+    );
+    Route::post('/seller/items', [ItemController::class, 'store']);
+    Route::get(
+        '/seller/categories',
+        [CategoryController::class, 'index']
     );
 });

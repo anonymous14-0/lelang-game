@@ -10,11 +10,23 @@ class TransactionController extends Controller
 {
     public function index(Request $request)
     {
-        $transactions = Transaction::with([
-            'auction.item'
-        ])
-        ->where('buyer_id', $request->user()->id)
-        ->get();
+        $user = $request->user();
+
+        if ($user->role === 'pembeli') {
+            $transactions = Transaction::with([
+                'auction.item'
+            ])
+            ->where('buyer_id', $user->id)
+            ->get();
+        } else {
+            $transactions = Transaction::with([
+                'auction.item'
+            ])
+            ->whereHas('auction.item', function ($query) use ($user) {
+                $query->where('user_id', $user->id);
+            })
+            ->get();
+        }
 
         return response()->json([
             'status' => true,
