@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\AuctionController;
@@ -72,4 +73,10 @@ Route::middleware('auth:sanctum')->group(function () {
         '/seller/categories',
         [CategoryController::class, 'index']
     );
+    Route::get('/profile', function (Request $request) {
+        return response()->json([
+            'status' => true,
+            'data' => $request->user()
+        ]);
+    });
 });
