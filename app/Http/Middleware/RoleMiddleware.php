@@ -1,5 +1,16 @@
 <?php
 
+/*
+|--------------------------------------------------------------------------
+| RoleMiddleware
+|--------------------------------------------------------------------------
+|
+| Middleware ini membatasi akses halaman web berdasarkan role user. Walaupun
+| API mobile memakai Sanctum, middleware role menjaga authorization pada layer
+| web MVC sehingga admin, penjual, dan pembeli hanya masuk ke area yang sesuai.
+|
+*/
+
 namespace App\Http\Middleware;
 
 use Closure;

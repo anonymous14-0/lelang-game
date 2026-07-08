@@ -1,5 +1,14 @@
 <?php
 
+/*
+|--------------------------------------------------------------------------
+| Auction Model
+|--------------------------------------------------------------------------
+|
+| Model Auction merepresentasikan tabel auctions yang menyimpan jadwal lelang, harga awal, harga berjalan, pemenang, dan status. Relasi: belongsTo Item, hasMany Bid, belongsTo User sebagai winner. Android menerima model ini melalui endpoint auction dalam format JSON.
+|
+*/
+
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;

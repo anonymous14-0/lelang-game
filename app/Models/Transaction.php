@@ -1,5 +1,14 @@
 <?php
 
+/*
+|--------------------------------------------------------------------------
+| Transaction Model
+|--------------------------------------------------------------------------
+|
+| Model Transaction merepresentasikan tabel transactions untuk escrow, bukti transfer, pengiriman akun, dan penyelesaian transaksi. Relasi: belongsTo Auction dan belongsTo User sebagai buyer.
+|
+*/
+
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
