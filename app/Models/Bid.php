@@ -1,5 +1,14 @@
 <?php
 
+/*
+|--------------------------------------------------------------------------
+| Bid Model
+|--------------------------------------------------------------------------
+|
+| Model Bid merepresentasikan tabel bids sebagai riwayat penawaran pembeli pada auction. Relasi: belongsTo Auction dan belongsTo User. Data ini dipakai Android untuk menampilkan histori bidding.
+|
+*/
+
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;

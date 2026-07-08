@@ -1,5 +1,16 @@
 <?php
 
+/*
+|--------------------------------------------------------------------------
+| DatabaseSeeder
+|--------------------------------------------------------------------------
+|
+| Seeder ini membuat akun dummy awal untuk presentasi dan pengujian GameBid.
+| Data admin, penjual, dan pembeli membantu demo alur MVC/API tanpa registrasi
+| manual. Password di-hash sebelum masuk ke tabel users.
+|
+*/
+
 namespace Database\Seeders;
 
 use App\Models\User;

@@ -1,5 +1,14 @@
 <?php
 
+/*
+|--------------------------------------------------------------------------
+| Category Model
+|--------------------------------------------------------------------------
+|
+| Model Category merepresentasikan tabel categories untuk pengelompokan item game. Relasi: hasMany Item. Android memakai data kategori saat seller membuat item.
+|
+*/
+
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;

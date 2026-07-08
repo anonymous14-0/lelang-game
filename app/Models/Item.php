@@ -1,5 +1,14 @@
 <?php
 
+/*
+|--------------------------------------------------------------------------
+| Item Model
+|--------------------------------------------------------------------------
+|
+| Model Item merepresentasikan tabel items berisi akun game yang dijual seller. Relasi: belongsTo User, belongsTo Category, hasOne Auction. Fillable melindungi mass assignment.
+|
+*/
+
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;

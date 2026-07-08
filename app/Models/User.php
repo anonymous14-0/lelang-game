@@ -1,5 +1,14 @@
 <?php
 
+/*
+|--------------------------------------------------------------------------
+| User Model
+|--------------------------------------------------------------------------
+|
+| Model User merepresentasikan tabel users untuk admin, penjual, dan pembeli. Model ini memakai Sanctum token untuk API Android, hashing password, hidden password, dan relasi item serta bid.
+|
+*/
+
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;

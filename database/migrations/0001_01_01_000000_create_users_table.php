@@ -1,5 +1,16 @@
 <?php
 
+/*
+|--------------------------------------------------------------------------
+| Migration: 0001_01_01_000000_create_users_table
+|--------------------------------------------------------------------------
+|
+| File migration ini mendokumentasikan perubahan struktur database MySQL
+| GameBid. Kolom-kolom di bawah menjadi sumber data bagi Eloquent Model,
+| Controller REST API, dan aplikasi Android yang menerima JSON response.
+|
+*/
+
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
